@@ -16,6 +16,7 @@ import com.example.rongsok.demo.model.ProductResponse;
 import com.example.rongsok.demo.repository.ProductRepository;
 import com.example.rongsok.demo.security.JwtTokenProvider;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,7 +37,9 @@ public class ProductController {
         return productRepository.findAll();
     }
 
-     @PostMapping("/add")
+     
+     @SecurityRequirement(name = "Bearer Authentication")
+     @PostMapping("/add")     
     public ResponseEntity<?> addProduct(@RequestBody @NonNull Product product, HttpServletRequest request) {
         String token = resolveToken(request);
         if (token == null || !tokenProvider.validateToken(token)) {
